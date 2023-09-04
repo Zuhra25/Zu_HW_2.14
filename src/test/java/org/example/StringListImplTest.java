@@ -1,10 +1,8 @@
 package org.example;
 
-import org.example.exceptions.BadIndexException;
-import org.example.exceptions.BadParamException;
-import org.example.exceptions.BadSizeException;
-import org.junit.Before;
+
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import static org.junit.Assert.assertEquals;
 
