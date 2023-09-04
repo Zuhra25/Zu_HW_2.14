@@ -11,7 +11,7 @@ import java.util.List;
 
 public class IntegerListImpl implements IntegerList {
     private final Integer[] arrayIntegers;
-    private int size=10;
+    private int size;
 
     public IntegerListImpl() {
         arrayIntegers = new Integer[10];
