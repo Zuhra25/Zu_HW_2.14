@@ -8,9 +8,8 @@ import org.example.exceptions.NotFoundException;
 import java.util.Arrays;
 import java.util.List;
 
-
 public class IntegerListImpl implements IntegerList {
-    private final Integer[] arrayIntegers;
+    private Integer[] arrayIntegers;
     private int size;
 
     public IntegerListImpl() {
@@ -139,7 +138,7 @@ public class IntegerListImpl implements IntegerList {
 
     private void sizeCheck() {
         if (size > arrayIntegers.length) {
-            throw new BadSizeException();
+            grow();
         }
     }
 
@@ -148,18 +147,40 @@ public class IntegerListImpl implements IntegerList {
             throw new BadIndexException();
         }
     }
-    private void sort(List<Integer> list){
-        for (int i = 1; i < list.size(); i++) {
-            int temp = list.get(i);
-            int j = i;
-            while (j > 0 && list.get(j - 1) >= temp) {
-                list.set(j, list.get(j - 1));
-                j--;
-            }
-            list.set(j, temp);
+
+    private void sort(int[] arr) {
+        quickSort(arr,0,arr.length-1);
+    }
+
+    public void quickSort(int[] arr, int begin, int end) {
+        if (begin < end) {
+            int partitionIndex = partition(arr, begin, end);
+
+            quickSort(arr, begin, partitionIndex - 1);
+            quickSort(arr, partitionIndex + 1, end);
         }
     }
-    private boolean binarySearch(List<Integer> list, Integer item){
+
+    private static int partition(int[] arr, int begin, int end) {
+        int pivot = arr[end];
+        int i = begin - 1;
+        for (int j = begin; j < end; j++) {
+            if (arr[j] <= pivot) {
+                i++;
+                swapElements(arr, i, j);
+            }
+        }
+        swapElements(arr, i + 1, end);
+        return i + 1;
+    }
+
+    private static void swapElements(int[] arr, int indexA, int indexB) {
+        int tmp = arr[indexA];
+        arr[indexA] = arr[indexB];
+        arr[indexB] = tmp;
+    }
+
+    private boolean binarySearch(List<Integer> list, Integer item) {
         int min = 0;
         int max = list.size() - 1;
 
@@ -177,5 +198,9 @@ public class IntegerListImpl implements IntegerList {
             }
         }
         return false;
+    }
+
+    private void grow() {
+        arrayIntegers = Arrays.copyOf(arrayIntegers, size * 3 / 2);
     }
 }
